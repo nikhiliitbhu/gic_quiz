@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Master</title>
+
+  <!-- External stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="app">
+    <h1>Quiz Master</h1>
+    <p class="subtitle">A 5-question trivia challenge. Beat the clock!</p>
+
+    <!-- ============ SCREEN 1: START ============ -->
+    <section id="start-screen" class="card">
+      <p class="start-meta">You'll get one question at a time, with 15 seconds each.</p>
+      <ul class="rules">
+        <li>Click an option, or press keys <strong>1-4</strong>.</li>
+        <li>Correct answers turn green, wrong ones turn red.</li>
+        <li>If the timer runs out, the question is marked wrong.</li>
+      </ul>
+      <button id="start-btn" class="btn">Start quiz</button>
+    </section>
+
+    <!-- ============ SCREEN 2: QUIZ ============ -->
+    <section id="quiz-screen" class="card hidden">
+      <div class="status">
+        <span id="progress-label">Question 1 of 5</span>
+        <span id="timer" class="timer">00:15</span>
+      </div>
+
+      <div class="progress-track">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+
+      <span id="category" class="category-tag">Category</span>
+      <p id="question-text" class="question-text">Question goes here</p>
+
+      <div id="options" class="options"><!-- buttons injected by JS --></div>
+
+      <p id="feedback" class="feedback"></p>
+
+      <button id="next-btn" class="btn hidden">Next question</button>
+    </section>
+
+    <!-- ============ SCREEN 3: RESULTS ============ -->
+    <section id="results-screen" class="card hidden">
+      <p class="score-big" id="final-score">0/5</p>
+      <p class="score-sub" id="final-percent">0%</p>
+      <p class="verdict" id="verdict"></p>
+
+      <p class="breakdown-title">Score by category</p>
+      <div id="breakdown"><!-- rows injected by JS --></div>
+
+      <button id="restart-btn" class="btn secondary">Play again</button>
+    </section>
+  </div>
+
+  <!-- Data first, then the app logic -->
+  <script src="questions.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

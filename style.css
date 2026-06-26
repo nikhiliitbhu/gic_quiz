@@ -1,0 +1,194 @@
+/* ============================================================
+   Quiz Master - Stylesheet
+   You can focus on script.js for learning JavaScript;
+   this file only controls how the page looks.
+   ============================================================ */
+
+:root {
+  --bg: #fbf7ef;
+  --card: #ffffff;
+  --ink: #2b2b2b;
+  --muted: #7c7569;
+  --accent: #d97706;       /* amber */
+  --accent-dark: #b45309;
+  --correct: #16a34a;
+  --wrong: #dc2626;
+  --line: #ece5d8;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 24px 16px;
+}
+
+.app {
+  width: 100%;
+  max-width: 560px;
+}
+
+h1 {
+  font-size: 1.9rem;
+  margin: 0 0 4px;
+  letter-spacing: -0.5px;
+}
+
+.subtitle { color: var(--muted); margin: 0 0 20px; }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+/* The screens - only one is visible at a time. JS toggles .hidden */
+.hidden { display: none; }
+
+/* Top status bar during the quiz */
+.status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.timer { font-variant-numeric: tabular-nums; font-weight: 600; }
+.timer.low { color: var(--wrong); }
+
+/* Progress bar */
+.progress-track {
+  height: 8px;
+  background: var(--line);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.category-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--accent-dark);
+  background: #fdecd3;
+  padding: 3px 10px;
+  border-radius: 99px;
+  margin-bottom: 12px;
+}
+
+.question-text {
+  font-size: 1.25rem;
+  line-height: 1.4;
+  margin: 0 0 20px;
+}
+
+/* Answer option buttons */
+.options { display: grid; gap: 10px; }
+
+.option {
+  text-align: left;
+  padding: 14px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  font-size: 1rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.option:hover:not(:disabled) { border-color: var(--accent); }
+.option:focus-visible { outline: 3px solid #fcd9a4; outline-offset: 2px; }
+.option:disabled { cursor: default; }
+
+.option .key {
+  width: 24px; height: 24px;
+  flex: none;
+  display: grid; place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* States applied by JS after answering */
+.option.correct { border-color: var(--correct); background: #eafbf0; }
+.option.wrong   { border-color: var(--wrong);   background: #fdecec; }
+.option.correct .key { border-color: var(--correct); color: var(--correct); }
+.option.wrong .key   { border-color: var(--wrong);   color: var(--wrong); }
+
+.feedback {
+  margin-top: 16px;
+  font-size: 0.95rem;
+  min-height: 22px;
+}
+.feedback.good { color: var(--correct); }
+.feedback.bad  { color: var(--wrong); }
+
+.btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn:hover { background: var(--accent-dark); }
+.btn:focus-visible { outline: 3px solid #fcd9a4; outline-offset: 2px; }
+.btn.secondary { background: #efe9dd; color: var(--ink); }
+.btn.secondary:hover { background: #e4ddcd; }
+
+/* Results screen */
+.score-big {
+  font-size: 3rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 6px 0 0;
+}
+.score-sub { text-align: center; color: var(--muted); margin: 0 0 6px; }
+.verdict { text-align: center; font-size: 1.1rem; margin: 4px 0 20px; }
+
+.breakdown-title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--muted);
+  margin: 18px 0 8px;
+}
+.cat-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+.cat-row:last-child { border-bottom: none; }
+.cat-score { font-weight: 600; }
+
+.start-meta { color: var(--muted); margin: 0 0 8px; font-size: 0.95rem; }
+ul.rules { color: var(--muted); font-size: 0.92rem; padding-left: 18px; }
+ul.rules li { margin-bottom: 4px; }
