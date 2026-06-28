@@ -133,7 +133,7 @@ h1 {
 
 /* States applied by JS after answering */
 .option.correct { border-color: var(--correct); background: #eafbf0; }
-.option.wrong   { border-color: var(--wrong);   background: #fdecec; }
+.option.wrong   { border-color: var(--wrong);   background: #fdecec;  color: var(--muted); }
 .option.correct .key { border-color: var(--correct); color: var(--correct); }
 .option.wrong .key   { border-color: var(--wrong);   color: var(--wrong); }
 
@@ -141,6 +141,7 @@ h1 {
   margin-top: 16px;
   font-size: 0.95rem;
   min-height: 22px;
+  color: red;
 }
 .feedback.good { color: var(--correct); }
 .feedback.bad  { color: var(--wrong); }
@@ -192,3 +193,4 @@ h1 {
 .start-meta { color: var(--muted); margin: 0 0 8px; font-size: 0.95rem; }
 ul.rules { color: var(--muted); font-size: 0.92rem; padding-left: 18px; }
 ul.rules li { margin-bottom: 4px; }
+
