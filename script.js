@@ -75,6 +75,14 @@ nextBtn.addEventListener("click", function () {
     showResults();
   }
 });
+restartBtn.addEventListener("click", function () {
+  currentQuestion = 0;
+  score = 0;
+  categoryStats = {};
+
+  resultsScreen.classList.add("hidden");
+  startScreen.classList.remove("hidden");
+});
 function loadQuestion() {
   // 1. Reset feedback aur next button
   feedback.textContent = "";
@@ -106,50 +114,90 @@ function loadQuestion() {
   });
 
   // 6. Timer reset aur start karo
-startTimer(current.correct);
+startTimer(current.correct,current.category);
 }
+// function checkAnswer(selectedIndex, correctIndex, category) {
+//   clearInterval(timer);
+
+//   const allButtons = document.querySelectorAll(".option");
+
+//   allButtons.forEach(function (btn, index) {
+//     btn.disabled = true;
+
+//     if (index === correctIndex) {
+//       btn.classList.add("correct");
+//     }
+//   });
 function checkAnswer(selectedIndex, correctIndex, category) {
   clearInterval(timer);
 
-  const allButtons = document.querySelectorAll(".option");
-
-  allButtons.forEach(function (btn, index) {
-    btn.disabled = true;
-
-    if (index === correctIndex) {
-      btn.classList.add("correct");
-    }
-  });
-
-  if (selectedIndex === correctIndex) {
-    score++;
-    feedback.textContent = "Correct!";
-  } else if (selectedIndex !== -1) {
-    allButtons[selectedIndex].classList.add("wrong");
-    feedback.textContent = "Wrong answer!";
-  } else {
-    feedback.textContent = "Time's up!";
+  
+  if (!categoryStats[category]) {
+    categoryStats[category] = { correct: 0, total: 0 };
   }
+  categoryStats[category].total++;
+  if (selectedIndex === correctIndex) {
+    categoryStats[category].correct++;
+  }
+
+  const allButtons = document.querySelectorAll(".option");
+  
+  // if (selectedIndex === correctIndex) {
+  //   score++;
+  //   feedback.textContent = "Correct!";
+  // } else if (selectedIndex !== -1) {
+  //   allButtons[selectedIndex].classList.add("wrong");
+  //   feedback.textContent = "Wrong answer!";
+  // } else {
+  //   feedback.textContent = "Time's up!";
+  // }
+  if (selectedIndex === correctIndex) {
+  score++;
+  feedback.textContent = "Correct!";
+  feedback.className = "feedback correct-text";
+} else if (selectedIndex !== -1) {
+  allButtons[selectedIndex].classList.add("wrong");
+  feedback.textContent = "Wrong answer!";
+  feedback.className = "feedback wrong-text";
+} else {
+  feedback.textContent = "Time's up!";
+  feedback.className = "feedback wrong-text";
+}
 
   nextBtn.classList.remove("hidden");
 }
 
-function startTimer(correctIndex) {
+// function startTimer(correctIndex) {
+//   timeLeft = 15;
+//   timerDisplay.textContent = "00:" + (timeLeft < 10 ? "0" + timeLeft : timeLeft);// Reset timer display ynai ("09" na ki "9") ye  0 add bhi krgea  
+//  // agar 10 se chhota hai toh uske aage 0 add krdo warna timeLeft hi dikhao
+//   clearInterval(timer);//clearInterval(timer) ka matlab: "agar koi purana timer chal raha hai (uski ID timer variable mein store thi), use band kar do."
+// //setInterval ek built-in JS function hai jiska kaam hai: "ek kaam ko baar-baar, fix time gap pe, automatically dohrana."
+//   timer = setInterval(function () {
+//     timeLeft--;
+//     timerDisplay.textContent = "00:" + (timeLeft < 10 ? "0" + timeLeft : timeLeft);
+
+//   if (timeLeft <= 0) {
+//   clearInterval(timer);
+//   checkAnswer(-1, correctIndex);
+//       // time khatam, answer galat maan lo
+//     }
+//   }, 1000);//1000ms = 1 second
+// }
+function startTimer(correctIndex, category) {
   timeLeft = 15;
-  timerDisplay.textContent = "00:" + (timeLeft < 10 ? "0" + timeLeft : timeLeft);// Reset timer display ynai ("09" na ki "9") ye  0 add bhi krgea  
- // agar 10 se chhota hai toh uske aage 0 add krdo warna timeLeft hi dikhao
-  clearInterval(timer);//clearInterval(timer) ka matlab: "agar koi purana timer chal raha hai (uski ID timer variable mein store thi), use band kar do."
-//setInterval ek built-in JS function hai jiska kaam hai: "ek kaam ko baar-baar, fix time gap pe, automatically dohrana."
+  timerDisplay.textContent = "00:" + (timeLeft < 10 ? "0" + timeLeft : timeLeft);
+  clearInterval(timer);
+
   timer = setInterval(function () {
     timeLeft--;
     timerDisplay.textContent = "00:" + (timeLeft < 10 ? "0" + timeLeft : timeLeft);
 
-  if (timeLeft <= 0) {
-  clearInterval(timer);
-  checkAnswer(-1, correctIndex);
-      // time khatam, answer galat maan lo
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      checkAnswer(-1, correctIndex, category);   // yahan category add karo
     }
-  }, 1000);//1000ms = 1 second
+  }, 1000);
 }
 function showResults() {
   quizScreen.classList.add("hidden");
@@ -168,6 +216,22 @@ function showResults() {
   verdict.textContent = "Not bad, keep practicing! 💪";
 } else {
   verdict.textContent = "Keep trying, you'll get better! 📚";
+}
+breakdown.innerHTML = "";
+
+for (let cat in categoryStats) {
+  const row = document.createElement("div");
+  row.classList.add("breakdown-row");
+
+  const catName = document.createElement("span");
+  catName.textContent = cat;
+
+  const catScore = document.createElement("span");
+  catScore.textContent = categoryStats[cat].correct + "/" + categoryStats[cat].total;
+
+  row.appendChild(catName);
+  row.appendChild(catScore);
+  breakdown.appendChild(row);
 }
 }
 
